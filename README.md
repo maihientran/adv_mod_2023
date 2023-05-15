@@ -5,7 +5,7 @@ Project: The sleeping barber problem - Implemented with IMITATOR
 * If the barber is not sleeping, the customer waits on the chair in the waiting room.
 * If no chair is available, customer leaves.
 
-Model the problem with an automaton.
+* Model the problem with an automaton.
 =======================================
 * Student: Tran Thi Hien Mai
 * ID: M22.ICT.004
