@@ -1,0 +1,73 @@
+(************************************************************
+ *                      IMITATOR MODEL                      
+ *
+ * Sleeping Barber Problem
+ *
+ * Description: A barber shop with a waiting room that has a limited number of chairs. 
+ * If there are no customers in the shop, the barber goes to sleep. When a customer arrives, 
+ * if the barber is sleeping, the customer wakes him up and is served immediately. 
+ * If the barber is busy, the customer takes a seat in the waiting room. 
+ * If there are no seats available, the customer leaves.
+ * 
+ * Source: Based on the model of coffee machine by Étienne André
+ * Author          : Tran Thi Hien Mai
+ *
+ * Created         : 2023/04/01
+ * Last modified   : 2023/04/01
+ *
+ *
+ * IMITATOR version: 3
+ ************************************************************)
+(* Clocks *)
+var
+	c, (* number of waiting customers *)
+	x, (* time since last customer arrival *)
+	y, (* time since last haircut *)
+	z (* time since last customer leaving *)
+		: clock;
+
+(* Parameters *)
+	n, (* number of chairs in waiting room *)
+	t (* time needed for a haircut *)
+		: parameter;
+(************************************************************)
+ automaton barber_shop
+(************************************************************)
+synclabs: arrive, haircut, leave, sleep, stay_in_waiting;
+
+loc sleeping: invariant True
+    when True sync arrive do {c := 1, x := 0} goto cutting;
+
+loc cutting: invariant True
+    when c = 0 sync sleep do {} goto sleeping;
+    when c > 0 & c <= n sync haircut do {y := 0, c := c - 1} goto cutting;
+
+loc waiting: invariant True
+    when True sync arrive do {c := c + 1, x := 0} goto waiting;
+    when y>0 sync stay_in_waiting do {} goto waiting;
+    when c <= n & y=0 sync haircut do {y := 0, c := c - 1} goto cutting;
+    when c > n sync leave do {z := 0} goto leaving;
+
+loc leaving: invariant True
+
+end (* barber_shop *)
+
+(************************************************************)
+(* Initial state *)
+(************************************************************)
+
+init :=
+    (* Initial location *)
+    & loc[barber_shop] = sleeping
+
+    (* Initial clock constraints *)
+    & c = 2 & x = 0 & y = 0 & z = 0
+
+    (* Parameter constraints *)
+    & n = 4 & t >= 0
+;
+
+(************************************************************)
+(* The end *)
+(************************************************************)
+end

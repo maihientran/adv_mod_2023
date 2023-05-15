@@ -1,0 +1,21 @@
+(************************************************************)
+(*                      IMITATOR MODEL                      
+ *
+ * Sleeping Barber Problem
+ *
+ * Description: A barber shop with a waiting room that has a limited number of chairs. 
+ * If there are no customers in the shop, the barber goes to sleep. When a customer arrives, 
+ * if the barber is sleeping, the customer wakes him up and is served immediately. 
+ * If the barber is busy, the customer takes a seat in the waiting room. 
+ * If there are no seats available, the customer leaves.
+ * 
+ * Source: Based on the model of coffee machine by Étienne André
+ * Author          : Tran Thi Hien Mai
+ *
+ * Created         : 2023/04/01
+ * Last modified   : 2023/04/01
+ *
+ *
+ * IMITATOR version: 3
+ ************************************************************)
+property := #synth pattern(if stay_in_waiting then eventually haircut within t);
